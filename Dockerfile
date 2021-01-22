@@ -12,6 +12,7 @@ RUN go get -u github.com/awslabs/amazon-ecr-credential-helper/ecr-login/cli/dock
 FROM registry.centos.org/centos/centos:8
 
 COPY --from=builder /tmp/eksctl /bin/
+COPY --from=builder /root/go/bin/docker-credential-ecr-login /bin
 
 COPY kubernetes.repo /etc/yum.repos.d/kubernetes.repo
 
