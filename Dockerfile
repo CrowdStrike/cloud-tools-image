@@ -14,18 +14,17 @@ FROM registry.centos.org/centos/centos:8
 COPY --from=builder /tmp/eksctl /bin/
 COPY --from=builder /root/go/bin/docker-credential-ecr-login /bin
 
+COPY .docker /root/.docker
 COPY kubernetes.repo /etc/yum.repos.d/kubernetes.repo
 
-# aws cli
 RUN : \
+    && dnf install -y kubectl \
     && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
     && dnf install -y zip \
     && unzip awscliv2.zip \
     && dnf history undo last -y \
-    && ./aws/install
-
-RUN : \
-    && dnf install -y kubectl yum-utils \
-    && yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo \
+    && ./aws/install \
+    && curl  https://download.docker.com/linux/centos/docker-ce.repo > /etc/yum.repos.d/docker-ce.repo \
     && dnf install -y docker-ce docker-ce-cli containerd.io \
     && dnf clean all
+
