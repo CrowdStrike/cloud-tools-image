@@ -18,7 +18,7 @@ COPY .docker /root/.docker
 COPY kubernetes.repo /etc/yum.repos.d/kubernetes.repo
 
 RUN : \
-    && dnf install -y kubectl groff-base \
+    && dnf install -y kubectl groff-base bash-completion \
     && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
     && dnf install -y zip \
     && unzip awscliv2.zip \
