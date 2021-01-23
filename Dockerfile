@@ -28,3 +28,6 @@ RUN : \
     && dnf install -y docker-ce docker-ce-cli containerd.io \
     && dnf clean all
 
+RUN echo $'\n\
+complete -C '/usr/local/bin/aws_completer' aws \n\
+' >> /etc/bashrc
