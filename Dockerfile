@@ -30,4 +30,5 @@ RUN : \
 
 RUN echo $'\n\
 complete -C '/usr/local/bin/aws_completer' aws \n\
-' >> /etc/bashrc
+' >> /etc/bashrc \
+  && kubectl completion bash >/etc/bash_completion.d/kubectl
