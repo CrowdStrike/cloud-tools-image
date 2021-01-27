@@ -16,9 +16,10 @@ COPY --from=builder /root/go/bin/docker-credential-ecr-login /bin
 
 COPY .docker /root/.docker
 COPY kubernetes.repo /etc/yum.repos.d/kubernetes.repo
+COPY google-cloud-sdk.repo /etc/yum.repos.d/google-cloud-sdk.repo
 
 RUN : \
-    && dnf install -y kubectl groff-base bash-completion \
+    && dnf install -y kubectl groff-base bash-completion google-cloud-sdk \
     && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
     && dnf install -y zip \
     && unzip awscliv2.zip \
