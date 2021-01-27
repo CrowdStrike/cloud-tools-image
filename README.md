@@ -6,3 +6,10 @@ docker run --privileged=true \
     -v ~/.aws:/root/.aws:ro -it --rm \
     quay.io/slukasik/falcon-demo
  ```
+
+This container contains command-line tools to manipulate assets in AWS/ECS/EKS/Fargate environments.
+ * aws command
+ * eksctl command
+ * kubectl command
+ * docker command
+ * docker-credential-ecr-login helper (set-up)
