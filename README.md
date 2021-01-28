@@ -13,3 +13,4 @@ This container contains command-line tools to manipulate assets in AWS/ECS/EKS/F
  * kubectl command
  * docker command
  * docker-credential-ecr-login helper (set-up)
+ * gcloud
