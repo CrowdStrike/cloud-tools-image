@@ -1,16 +1,20 @@
-# falcon-demo-container [![Docker Repository on Quay](https://quay.io/repository/slukasik/falcon-demo/status "Docker Repository on Quay")](https://quay.io/repository/slukasik/falcon-demo)
+# cloud-tools-image [![Docker Repository on Quay](https://quay.io/repository/crowdstrike/cloud-tools-image/status "Docker Repository on Quay")](https://quay.io/repository/crowdstrike/cloud-tools-image)
 
 ```
 docker run --privileged=true \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v ~/.aws:/root/.aws:ro -it --rm \
-    quay.io/slukasik/falcon-demo
- ```
+    quay.io/crowdstrike/cloud-tools-image
+```
 
-This container contains command-line tools to manipulate assets in AWS/ECS/EKS/Fargate environments.
+Cloud-tools-image is a collection of command-line tools for remote communication with public and private cloud environments.
+
+Cloud-tools-image is an open source project, not CrowdStrike product. As such it carries no formal support, expressed or implied.
+
+This container contains following command-line tools:
  * aws command
  * eksctl command
  * kubectl command
  * docker command
- * docker-credential-ecr-login helper (set-up)
- * gcloud
+ * docker-credential-ecr-login helper (configured)
+ * gcloud command
