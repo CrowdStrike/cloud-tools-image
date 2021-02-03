@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: detection-app
+spec:
+  selector:
+   matchLabels:
+      run: detection-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: detection-app
+    spec:
+      containers:
+          - name: app
+            image: ubuntu:latest
+            imagePullPolicy: Always
+            command:
+              - "bash"
+            args:
+              - "-xc"
+              - "chgrp 0 /etc/ld.so.preload; tail -f /dev/null"
