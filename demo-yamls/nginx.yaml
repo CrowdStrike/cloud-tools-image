@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-server
+spec:
+  selector:
+    matchLabels:
+      run: nginx-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: nginx-server
+    spec:
+      containers:
+        - name: nginx-server
+          image: nginx
+          command: ["nginx"]
+          args: ["-g", 'daemon off;']
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-server
+  labels:
+    run: nginx-server
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+  selector:
+    run: nginx-server
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: curl-client
+spec:
+  selector:
+    matchLabels:
+      run: curl-client
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: curl-client
+    spec:
+      containers:
+        - name: curl-client
+          image: centos:latest
+          command: ["/bin/sh"]
+          args: ["-xc","while sleep 5; do curl -I nginx-server; done"]
