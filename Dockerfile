@@ -16,8 +16,7 @@ COPY --from=builder /root/go/bin/docker-credential-ecr-login /bin
 
 COPY .docker /root/.docker
 COPY demo-yamls /root/demo-yamls
-COPY kubernetes.repo /etc/yum.repos.d/kubernetes.repo
-COPY google-cloud-sdk.repo /etc/yum.repos.d/google-cloud-sdk.repo
+COPY kubernetes.repo google-cloud-sdk.repo /etc/yum.repos.d/
 
 RUN : \
     && dnf install -y kubectl groff-base bash-completion google-cloud-sdk \
@@ -26,9 +25,11 @@ RUN : \
     && unzip awscliv2.zip \
     && dnf history undo last -y \
     && ./aws/install \
+    && rm -rf ./aws \
     && curl  https://download.docker.com/linux/centos/docker-ce.repo > /etc/yum.repos.d/docker-ce.repo \
     && dnf install -y docker-ce docker-ce-cli containerd.io \
-    && dnf clean all
+    && dnf clean all \
+    && rm -rf /var/cache/dnf
 
 RUN echo $'\n\
 complete -C '/usr/local/bin/aws_completer' aws \n\
