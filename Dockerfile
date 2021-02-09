@@ -8,11 +8,13 @@ RUN curl --silent --location "https://github.com/weaveworks/eksctl/releases/late
 # https://github.com/awslabs/amazon-ecr-credential-helper
 RUN go get -u github.com/awslabs/amazon-ecr-credential-helper/ecr-login/cli/docker-credential-ecr-login
 
+RUN go get -u github.com/crowdstrike/gofalcon/examples/falcon_sensor_download
+
 
 FROM registry.centos.org/centos/centos:8
 
 COPY --from=builder /tmp/eksctl /bin/
-COPY --from=builder /root/go/bin/docker-credential-ecr-login /bin
+COPY --from=builder /root/go/bin/docker-credential-ecr-login /root/go/bin/falcon_sensor_download /bin/
 
 COPY .docker /root/.docker
 COPY demo-yamls /root/demo-yamls
