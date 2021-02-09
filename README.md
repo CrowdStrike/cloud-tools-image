@@ -12,6 +12,7 @@ Cloud-tools-image is a collection of command-line tools for remote communication
 Cloud-tools-image is an open source project, not CrowdStrike product. As such it carries no formal support, expressed or implied.
 
 This container contains following command-line tools:
+ * falcon_sensor_download command
  * aws command
  * eksctl command
  * kubectl command
