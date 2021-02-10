@@ -1,16 +1,23 @@
+# Application that generates single detection and hangs up
+#
+# Deployment
+#    kubectl apply -f ~/demo-yamls/detection-single.yaml
+# Tear Down
+#    kubectl delete -f ~/demo-yamls/detection-single.yaml
+#
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: detection-app
+  name: detection-single
 spec:
   selector:
    matchLabels:
-      run: detection-app
+      run: detection-single
   replicas: 1
   template:
     metadata:
       labels:
-        run: detection-app
+        run: detection-single
     spec:
       containers:
           - name: app
