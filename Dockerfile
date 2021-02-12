@@ -21,7 +21,7 @@ COPY demo-yamls /root/demo-yamls
 COPY kubernetes.repo google-cloud-sdk.repo /etc/yum.repos.d/
 
 RUN : \
-    && dnf install -y kubectl groff-base bash-completion google-cloud-sdk \
+    && dnf install -y kubectl groff-base bash-completion google-cloud-sdk tmux \
     && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
     && dnf install -y zip \
     && unzip awscliv2.zip \
