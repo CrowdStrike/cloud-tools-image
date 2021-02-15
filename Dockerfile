@@ -28,6 +28,7 @@ RUN : \
     && dnf history undo last -y \
     && ./aws/install \
     && rm -rf ./aws \
+    && rm awscliv2.zip \
     && curl  https://download.docker.com/linux/centos/docker-ce.repo > /etc/yum.repos.d/docker-ce.repo \
     && dnf install -y docker-ce docker-ce-cli containerd.io \
     && dnf clean all \
