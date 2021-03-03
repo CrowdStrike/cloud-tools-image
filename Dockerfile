@@ -5,6 +5,9 @@ RUN dnf install -y unzip golang-bin git
 # eksctl cli
 RUN curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
 
+# helm
+RUN curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+
 # https://github.com/awslabs/amazon-ecr-credential-helper
 RUN go get -u github.com/awslabs/amazon-ecr-credential-helper/ecr-login/cli/docker-credential-ecr-login
 
@@ -13,7 +16,7 @@ RUN go get -u github.com/crowdstrike/gofalcon/examples/falcon_sensor_download
 
 FROM registry.centos.org/centos/centos:8
 
-COPY --from=builder /tmp/eksctl /bin/
+COPY --from=builder /tmp/eksctl /usr/local/bin/helm /bin/
 COPY --from=builder /root/go/bin/docker-credential-ecr-login /root/go/bin/falcon_sensor_download /bin/
 
 COPY .docker /root/.docker
@@ -38,4 +41,5 @@ RUN echo $'\n\
 complete -C '/usr/local/bin/aws_completer' aws \n\
 ' >> /etc/bashrc \
   && kubectl completion bash >/etc/bash_completion.d/kubectl \
-  && eksctl completion bash >/etc/bash_completion.d/eksctl
+  && eksctl completion bash >/etc/bash_completion.d/eksctl \
+  && helm completion bash >/etc/bash_completion.d/helm
