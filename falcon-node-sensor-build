@@ -1,0 +1,60 @@
+#!/bin/bash
+
+set -e -o pipefail
+
+function die(){
+    echo "$0: fatal error: $*" >&2
+    exit 1
+}
+
+if [ -z "$FALCON_CLIENT_ID" ]; then
+    die "Missing FALCON_CLIENT_ID environment variable. Please provide your OAuth2 API Client ID for authentication with CrowdStrike Falcon platform. Establishing and retrieving OAuth2 API credentials can be performed at https://falcon.crowdstrike.com/support/api-clients-and-keys."
+fi
+if [ -z "$FALCON_CLIENT_SECRET" ]; then
+    die "Missing FALCON_CLIENT_SECRET environment variable. Please provide your OAuth2 API Client Secret for authentication with CrowdStrike Falcon platform. Establishing and retrieving OAuth2 API credentials can be performed at https://falcon.crowdstrike.com/support/api-clients-and-keys."
+fi
+
+tempdir=$(mktemp -d)
+tempdir_cleanup() { rm -rf "$tempdir"; }; trap tempdir_cleanup EXIT
+
+pushd "$tempdir"
+git clone --depth 1 https://github.com/CrowdStrike/Dockerfiles
+pushd Dockerfiles
+
+case "$1" in
+    ubuntu20)
+        falcon_sensor_download --os-name=Ubuntu --os-version=14/16/18/20
+        docker build --no-cache=true \
+               --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+               --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
+               --build-arg FALCON_PKG=falcon-sensor_*_amd64.deb \
+               -t falcon-node-sensor:latest \
+               -f Dockerfile.ubuntu .
+        ;;
+    rhel8)
+        falcon_sensor_download --os-name=RHEL/CentOS/Oracle --os-version=8
+        docker build --no-cache=true \
+               --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+               --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
+               --build-arg FALCON_PKG=falcon-sensor-*.x86_64.rpm \
+               -t falcon-node-sensor:latest \
+               -f Dockerfile .
+        ;;
+    sles15)
+        falcon_sensor_download --os-name=SLES --os-version=15
+        docker build --no-cache=true \
+               --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+               --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
+               --build-arg FALCON_PKG=falcon-sensor-*.rpm \
+               -t falcon-node-sensor:latest \
+               -f Dockerfile.suse .
+        ;;
+    *)
+        die "Please provide node operating system as command-line argument. Valid options are: ubuntu20, rhel8, sles15"
+        ;;
+esac
+
+docker images falcon-node-sensor
+
+echo "Contaner falcon-node-sensor:latest has been built successfully"
+
