@@ -22,9 +22,10 @@ COPY --from=builder /root/go/bin/docker-credential-ecr-login /root/go/bin/falcon
 COPY .docker /root/.docker
 COPY demo-yamls /root/demo-yamls
 COPY kubernetes.repo google-cloud-sdk.repo /etc/yum.repos.d/
+COPY falcon-node-sensor-build /bin
 
 RUN : \
-    && dnf install -y kubectl groff-base bash-completion google-cloud-sdk tmux \
+    && dnf install -y kubectl groff-base bash-completion google-cloud-sdk tmux git \
     && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
     && dnf install -y zip \
     && unzip awscliv2.zip \
