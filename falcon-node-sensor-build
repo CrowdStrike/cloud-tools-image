@@ -22,7 +22,8 @@ git clone --depth 1 https://github.com/CrowdStrike/Dockerfiles
 pushd Dockerfiles
 
 case "$1" in
-    ubuntu20)
+    ubuntu18)
+        sed -i  's/^FROM ubuntu:.*$/FROM ubuntu:18.04/g' Dockerfile.ubuntu
         falcon_sensor_download --os-name=Ubuntu --os-version=14/16/18/20
         docker build --no-cache=true \
                --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
@@ -31,6 +32,15 @@ case "$1" in
                -t falcon-node-sensor:latest \
                -f Dockerfile.ubuntu .
         ;;
+    ubuntu20)
+        falcon_sensor_download --os-name=Ubuntu --os-version=14/16/18/20
+        docker build --no-cache=true \
+               --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+               --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
+               --build-arg FALCON_PKG=falcon-sensor_*_amd64.deb \
+               -t falcon-node-sensor:latest \
+               -f Dockerfile.ubuntu .
+         ;;
     rhel8)
         falcon_sensor_download --os-name=RHEL/CentOS/Oracle --os-version=8
         docker build --no-cache=true \
