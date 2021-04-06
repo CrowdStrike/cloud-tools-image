@@ -35,6 +35,15 @@ git clone --depth 1 https://github.com/CrowdStrike/Dockerfiles
 pushd Dockerfiles
 
 case "$1" in
+    amazonlinux2)
+        falcon_sensor_download --os-name='Amazon Linux' --os-version=2
+        docker build --no-cache=true \
+               --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+               --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
+               --build-arg FALCON_PKG=falcon-sensor-*.x86_64.rpm \
+               -t falcon-node-sensor:latest \
+               -f Dockerfile.amazonlinux .
+        ;;
     ubuntu18)
         sed -i  's/^FROM ubuntu:.*$/FROM ubuntu:18.04/g' Dockerfile.ubuntu
         falcon_sensor_download --os-name=Ubuntu --os-version=14/16/18/20
@@ -73,7 +82,7 @@ case "$1" in
                -f Dockerfile.suse .
         ;;
     *)
-        die "Please provide node operating system as command-line argument. Valid options are: ubuntu20, rhel8, sles15"
+        die "Please provide node operating system as command-line argument. Valid options are: amazonlinux2, ubuntu18, ubuntu20, rhel8, sles15"
         ;;
 esac
 
