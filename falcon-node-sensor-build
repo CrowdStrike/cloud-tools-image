@@ -1,5 +1,18 @@
 #!/bin/bash
 
+: <<'#OutsideUsageExample'
+
+docker run --privileged=true -it --rm \
+        -e FALCON_CLIENT_ID="$FALCON_CLIENT_ID" \
+        -e FALCON_CLIENT_SECRET="$FALCON_CLIENT_SECRET" \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        quay.io/crowdstrike/cloud-tools-image \
+        falcon-node-sensor-build ubuntu20
+
+#OutsideUsageExample
+
+
+
 set -e -o pipefail
 
 function die(){
