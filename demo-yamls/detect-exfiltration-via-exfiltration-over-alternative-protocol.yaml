@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exfiltration-via-exfiltration-over-alternative-protocol
+spec:
+  selector:
+   matchLabels:
+      run: exfiltration-via-exfiltration-over-alternative-protocol
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: exfiltration-via-exfiltration-over-alternative-protocol
+    spec:
+      containers:
+          - name: app
+            image: quay.io/crowdstrike/detection-container
+            imagePullPolicy: Always
+            command:
+              - "/entrypoint.sh"
+            args:
+              - "./bin/Exfiltration_via_Exfiltration_Over_Alternative_Protocol.sh; tail -f /dev/null"
