@@ -34,9 +34,15 @@ pushd "$tempdir"
 git clone --depth 1 https://github.com/CrowdStrike/Dockerfiles
 pushd Dockerfiles
 
+if [ -z "$2" ]; then
+    sensor_version=latest;
+else
+    sensor_version="$2"
+fi
+
 case "$1" in
     amazonlinux2)
-        falcon_sensor_download --os-name='Amazon Linux' --os-version=2
+        falcon_sensor_download --os-name='Amazon Linux' --os-version=2 --sensor-version="${sensor_version}"
         docker build --no-cache=true \
                --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
                --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
@@ -46,7 +52,7 @@ case "$1" in
         ;;
     ubuntu18)
         sed -i  's/^FROM ubuntu:.*$/FROM ubuntu:18.04/g' Dockerfile.ubuntu
-        falcon_sensor_download --os-name=Ubuntu --os-version=14/16/18/20
+        falcon_sensor_download --os-name=Ubuntu --os-version=14/16/18/20 --sensor-version="${sensor_version}"
         docker build --no-cache=true \
                --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
                --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
@@ -55,7 +61,7 @@ case "$1" in
                -f Dockerfile.ubuntu .
         ;;
     ubuntu20)
-        falcon_sensor_download --os-name=Ubuntu --os-version=14/16/18/20
+        falcon_sensor_download --os-name=Ubuntu --os-version=14/16/18/20 --sensor-version="${sensor_version}"
         docker build --no-cache=true \
                --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
                --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
@@ -64,7 +70,7 @@ case "$1" in
                -f Dockerfile.ubuntu .
          ;;
     rhel8)
-        falcon_sensor_download --os-name=RHEL/CentOS/Oracle --os-version=8
+        falcon_sensor_download --os-name=RHEL/CentOS/Oracle --os-version=8 --sensor-version="${sensor_version}"
         docker build --no-cache=true \
                --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
                --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
@@ -73,7 +79,7 @@ case "$1" in
                -f Dockerfile .
         ;;
     sles15)
-        falcon_sensor_download --os-name=SLES --os-version=15
+        falcon_sensor_download --os-name=SLES --os-version=15 --sensor-version="${sensor_version}"
         docker build --no-cache=true \
                --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
                --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
