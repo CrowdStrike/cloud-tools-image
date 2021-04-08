@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: defense-evasion-via-masquerading
+spec:
+  selector:
+   matchLabels:
+      run: defense-evasion-via-masquerading
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: defense-evasion-via-masquerading
+    spec:
+      containers:
+          - name: app
+            image: quay.io/crowdstrike/detection-container
+            imagePullPolicy: Always
+            command:
+              - "/entrypoint.sh"
+            args:
+              - "./bin/Defense_Evasion_via_Masquerading.sh; tail -f /dev/null"
