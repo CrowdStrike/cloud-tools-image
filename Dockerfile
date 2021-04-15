@@ -21,7 +21,7 @@ COPY --from=builder /root/go/bin/docker-credential-ecr-login /root/go/bin/falcon
 
 COPY .docker /root/.docker
 COPY demo-yamls /root/demo-yamls
-COPY kubernetes.repo google-cloud-sdk.repo /etc/yum.repos.d/
+COPY kubernetes.repo google-cloud-sdk.repo azure-cli.repo /etc/yum.repos.d/
 COPY falcon-node-sensor-build /bin
 
 RUN : \
@@ -36,11 +36,15 @@ RUN : \
     && curl  https://download.docker.com/linux/centos/docker-ce.repo > /etc/yum.repos.d/docker-ce.repo \
     && dnf install -y docker-ce docker-ce-cli containerd.io \
     && dnf clean all \
-    && rm -rf /var/cache/dnf
+    && rm -rf /var/cache/dnf \
+    && rpm --import https://packages.microsoft.com/keys/microsoft.asc \
+    && dnf install azure-cli
 
+       
 RUN echo $'\n\
 complete -C '/usr/local/bin/aws_completer' aws \n\
 ' >> /etc/bashrc \
   && kubectl completion bash >/etc/bash_completion.d/kubectl \
   && eksctl completion bash >/etc/bash_completion.d/eksctl \
   && helm completion bash >/etc/bash_completion.d/helm
+     
