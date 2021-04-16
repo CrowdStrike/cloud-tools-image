@@ -1,4 +1,4 @@
-FROM registry.centos.org/centos:8 as builder
+FROM registry.centos.org/centos/centos:8 as builder
 
 RUN dnf install -y unzip golang-bin git
 
@@ -14,7 +14,7 @@ RUN go get -u github.com/awslabs/amazon-ecr-credential-helper/ecr-login/cli/dock
 RUN go get -u github.com/crowdstrike/gofalcon/examples/falcon_sensor_download
 
 
-FROM registry.centos.org/centos:8
+FROM registry.centos.org/centos/centos:8
 
 COPY --from=builder /tmp/eksctl /usr/local/bin/helm /bin/
 COPY --from=builder /root/go/bin/docker-credential-ecr-login /root/go/bin/falcon_sensor_download /bin/
