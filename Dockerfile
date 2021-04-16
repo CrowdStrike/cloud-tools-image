@@ -31,14 +31,11 @@ RUN : \
     && unzip awscliv2.zip \
     && dnf history undo last -y \
     && ./aws/install \
-    && rm -rf ./aws \
-    && rm awscliv2.zip \
     && curl  https://download.docker.com/linux/centos/docker-ce.repo > /etc/yum.repos.d/docker-ce.repo \
-    && dnf install -y docker-ce docker-ce-cli containerd.io \
     && rpm --import https://packages.microsoft.com/keys/microsoft.asc \
-    && dnf install azure-cli -y \
+    && dnf install -y docker-ce docker-ce-cli containerd.io azure-cli\
     && dnf clean all \
-    && rm -rf /var/cache/dnf
+    && rm -rf ./aws awscliv2.zip /var/cache/dnf
 
        
 RUN echo $'\n\
