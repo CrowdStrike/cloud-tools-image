@@ -35,10 +35,10 @@ RUN : \
     && rm awscliv2.zip \
     && curl  https://download.docker.com/linux/centos/docker-ce.repo > /etc/yum.repos.d/docker-ce.repo \
     && dnf install -y docker-ce docker-ce-cli containerd.io \
-    && dnf clean all \
-    && rm -rf /var/cache/dnf \
     && rpm --import https://packages.microsoft.com/keys/microsoft.asc \
-    && dnf install azure-cli
+    && dnf install azure-cli \
+    && dnf clean all \
+    && rm -rf /var/cache/dnf
 
        
 RUN echo $'\n\
