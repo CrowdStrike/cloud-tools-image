@@ -36,7 +36,7 @@ RUN : \
     && curl  https://download.docker.com/linux/centos/docker-ce.repo > /etc/yum.repos.d/docker-ce.repo \
     && dnf install -y docker-ce docker-ce-cli containerd.io \
     && rpm --import https://packages.microsoft.com/keys/microsoft.asc \
-    && dnf install azure-cli \
+    && dnf install azure-cli -y \
     && dnf clean all \
     && rm -rf /var/cache/dnf
 
