@@ -25,4 +25,5 @@ This container contains following command-line tools:
  * docker command
  * docker-credential-ecr-login helper (configured)
  * gcloud command
+ * az command
  * helm command
