@@ -5,6 +5,7 @@ docker run --privileged=true \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v ~/.aws:/root/.aws:ro -it --rm \
     -v ~/.config/gcloud:/root/.config/gcloud \
+    -v ~/.azure:/root/.azure \
     -e FALCON_CLIENT_ID="$FALCON_CLIENT_ID" \
     -e FALCON_CLIENT_SECRET="$FALCON_CLIENT_SECRET" \
     -e CID="$CID" \
