@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: collection-via-automated-collection
+spec:
+  selector:
+   matchLabels:
+      run: collection-via-automated-collection
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: collection-via-automated-collection
+    spec:
+      containers:
+          - name: app
+            image: quay.io/crowdstrike/detection-container
+            imagePullPolicy: Always
+            command:
+              - "/entrypoint.sh"
+            args:
+              - "./bin/Collection_via_Automated_Collection.sh; tail -f /dev/null"

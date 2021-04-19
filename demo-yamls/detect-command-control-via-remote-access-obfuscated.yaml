@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: command-control-via-remote-access-obfuscated
+spec:
+  selector:
+   matchLabels:
+      run: command-control-via-remote-access-obfuscated
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: command-control-via-remote-access-obfuscated
+    spec:
+      containers:
+          - name: app
+            image: quay.io/crowdstrike/detection-container
+            imagePullPolicy: Always
+            command:
+              - "/entrypoint.sh"
+            args:
+              - "./bin/Command_Control_via_Remote_Access-obfuscated.sh; tail -f /dev/null"

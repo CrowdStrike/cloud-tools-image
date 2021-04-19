@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webserver-bash-reverse-shell
+spec:
+  selector:
+   matchLabels:
+      run: webserver-bash-reverse-shell
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: webserver-bash-reverse-shell
+    spec:
+      containers:
+          - name: app
+            image: quay.io/crowdstrike/detection-container
+            imagePullPolicy: Always
+            command:
+              - "/entrypoint.sh"
+            args:
+              - "./bin/Webserver_Bash_Reverse_Shell.sh; tail -f /dev/null"

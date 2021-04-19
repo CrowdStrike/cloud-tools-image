@@ -1,0 +1,39 @@
+# kubectl apply -f ~/.aws/share/vulnerable.example.yaml
+# kubectl get service vulnerable-example-com
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vulnerable.example.com
+spec:
+  selector:
+   matchLabels:
+      run: vulnerable.example.com
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: vulnerable.example.com
+    spec:
+      containers:
+          - name: app
+            image: quay.io/slukasik/vulnapp
+            imagePullPolicy: Always
+            command:
+              - "/entrypoint.sh"
+            ports:
+             - containerPort: 8080
+               name: web
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vulnerable-example-com
+spec:
+  selector:
+    run: vulnerable.example.com
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: LoadBalancer

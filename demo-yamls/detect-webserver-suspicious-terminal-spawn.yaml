@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webserver-suspicious-terminal-spawn
+spec:
+  selector:
+   matchLabels:
+      run: webserver-suspicious-terminal-spawn
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: webserver-suspicious-terminal-spawn
+    spec:
+      containers:
+          - name: app
+            image: quay.io/crowdstrike/detection-container
+            imagePullPolicy: Always
+            command:
+              - "/entrypoint.sh"
+            args:
+              - "./bin/Webserver_Suspicious_Terminal_Spawn.sh; tail -f /dev/null"
