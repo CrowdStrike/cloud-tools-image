@@ -11,13 +11,13 @@ RUN curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 |
 # https://github.com/awslabs/amazon-ecr-credential-helper
 RUN go get -u github.com/awslabs/amazon-ecr-credential-helper/ecr-login/cli/docker-credential-ecr-login
 
-RUN go get -u github.com/crowdstrike/gofalcon/examples/falcon_sensor_download
+RUN go get -u github.com/crowdstrike/gofalcon/examples/falcon_sensor_download github.com/crowdstrike/gofalcon/examples/falcon_registry_token
 
 
 FROM registry.centos.org/centos/centos:8
 
 COPY --from=builder /tmp/eksctl /usr/local/bin/helm /bin/
-COPY --from=builder /root/go/bin/docker-credential-ecr-login /root/go/bin/falcon_sensor_download /bin/
+COPY --from=builder /root/go/bin/docker-credential-ecr-login /root/go/bin/falcon_* /bin/
 
 COPY .docker /root/.docker
 COPY demo-yamls /root/demo-yamls
