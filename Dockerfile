@@ -22,7 +22,7 @@ COPY --from=builder /root/go/bin/docker-credential-ecr-login /root/go/bin/falcon
 COPY .docker /root/.docker
 COPY demo-yamls /root/demo-yamls
 COPY kubernetes.repo google-cloud-sdk.repo azure-cli.repo /etc/yum.repos.d/
-COPY falcon-node-sensor-build /bin
+COPY falcon-node-sensor-build falcon-container-sensor-push /bin/
 
 RUN : \
     && dnf install -y kubectl groff-base bash-completion google-cloud-sdk tmux git \
@@ -33,7 +33,8 @@ RUN : \
     && ./aws/install \
     && curl  https://download.docker.com/linux/centos/docker-ce.repo > /etc/yum.repos.d/docker-ce.repo \
     && rpm --import https://packages.microsoft.com/keys/microsoft.asc \
-    && dnf install -y docker-ce docker-ce-cli containerd.io azure-cli\
+    && dnf install -y docker-ce docker-ce-cli containerd.io azure-cli \
+    && dnf install -y skopeo --nobest jq \
     && dnf clean all \
     && rm -rf ./aws awscliv2.zip /var/cache/dnf
 
