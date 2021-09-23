@@ -25,6 +25,7 @@ COPY kubernetes.repo google-cloud-sdk.repo azure-cli.repo /etc/yum.repos.d/
 COPY falcon-node-sensor-build /bin
 
 RUN : \
+    && dnf update -y \
     && dnf install -y kubectl groff-base bash-completion google-cloud-sdk tmux git \
     && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
     && dnf install -y zip \
