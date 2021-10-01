@@ -52,7 +52,7 @@ case "$1" in
         ;;
     ubuntu18)
         sed -i  's/^FROM ubuntu:.*$/FROM ubuntu:18.04/g' Dockerfile.ubuntu
-        falcon_sensor_download --os-name=Ubuntu --os-version=14/16/18/20 --sensor-version="${sensor_version}"
+        falcon_sensor_download --os-name=Ubuntu --os-version=16/18/20 --sensor-version="${sensor_version}"
         docker build --no-cache=true \
                --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
                --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
@@ -61,7 +61,7 @@ case "$1" in
                -f Dockerfile.ubuntu .
         ;;
     ubuntu20)
-        falcon_sensor_download --os-name=Ubuntu --os-version=14/16/18/20 --sensor-version="${sensor_version}"
+        falcon_sensor_download --os-name=Ubuntu --os-version=16/18/20 --sensor-version="${sensor_version}"
         docker build --no-cache=true \
                --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
                --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
