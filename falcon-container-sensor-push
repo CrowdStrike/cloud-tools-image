@@ -33,13 +33,13 @@ fi
 
 case "$FALCON_CLOUD" in
     ""|"us-1")
-        CLOUD_LOWER=us1
+        CLOUD_LOWER=us-1
         ;;
     "us-2")
-        CLOUD_LOWER=us2
+        CLOUD_LOWER=us-2
         ;;
     "eu-1")
-        CLOUD_LOWER=eu1
+        CLOUD_LOWER=eu-1
         ;;
     "*")
         die "Invalid cloud specifier in FALCON_CLOUD environment variable: $FALCON_CLOUD"
