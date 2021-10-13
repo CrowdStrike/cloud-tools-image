@@ -8,6 +8,7 @@ docker run --privileged=true \
     -v ~/.azure:/root/.azure \
     -e FALCON_CLIENT_ID="$FALCON_CLIENT_ID" \
     -e FALCON_CLIENT_SECRET="$FALCON_CLIENT_SECRET" \
+    -e FALCON_CLOUD="$FALCON_CLOUD" \
     -e CID="$CID" \
     quay.io/crowdstrike/cloud-tools-image
 ```
