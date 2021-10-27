@@ -11,7 +11,7 @@ RUN curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 |
 # https://github.com/awslabs/amazon-ecr-credential-helper
 RUN go get -u github.com/awslabs/amazon-ecr-credential-helper/ecr-login/cli/docker-credential-ecr-login
 
-RUN go get -u github.com/crowdstrike/gofalcon/examples/falcon_sensor_download github.com/crowdstrike/gofalcon/examples/falcon_registry_token
+RUN go get -u github.com/crowdstrike/gofalcon/examples/falcon_sensor_download github.com/crowdstrike/gofalcon/examples/falcon_registry_token github.com/crowdstrike/gofalcon/examples/falcon_get_cid
 
 
 FROM registry.centos.org/centos/centos:8
