@@ -20,6 +20,10 @@ function die(){
     exit 1
 }
 
+if [ -z "$FALCON_CLOUD" ]; then
+    echo "WARNING: FALCON_CLOUD environment variable missing. Assuming FALCON_CLOUD=us-1" >&2
+fi
+
 if [ -z "$FALCON_CLIENT_ID" ]; then
     die "Missing FALCON_CLIENT_ID environment variable. Please provide your OAuth2 API Client ID for authentication with CrowdStrike Falcon platform. Establishing and retrieving OAuth2 API credentials can be performed at https://falcon.crowdstrike.com/support/api-clients-and-keys."
 fi
