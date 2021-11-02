@@ -1,0 +1,59 @@
+#!/bin/bash
+
+: <<'#OutsideUsageExample'
+
+IMAGE_PULL_TOKEN=$(
+    docker run --privileged=true -it --rm \
+            -e FALCON_CLIENT_ID="$FALCON_CLIENT_ID" \
+            -e FALCON_CLIENT_SECRET="$FALCON_CLIENT_SECRET" \
+            -e FALCON_CLOUD="$FALCON_CLOUD" \
+            quay.io/crowdstrike/cloud-tools-image \
+            falcon-image-pull-token
+)
+
+#OutsideUsageExample
+
+set -e -o pipefail
+
+if [ -z "$FALCON_CLOUD" ]; then
+    echo "WARNING: FALCON_CLOUD environment variable missing. Assuming FALCON_CLOUD=us-1" >&2
+fi
+
+if [ -z "$FALCON_CLIENT_ID" ]; then
+    die "Missing FALCON_CLIENT_ID environment variable. Please provide your OAuth2 API Client ID for authentication with CrowdStrike Falcon platform. Establishing and retrieving OAuth2 API credentials can be performed at https://falcon.crowdstrike.com/support/api-clients-and-keys."
+fi
+if [ -z "$FALCON_CLIENT_SECRET" ]; then
+    die "Missing FALCON_CLIENT_SECRET environment variable. Please provide your OAuth2 API Client Secret for authentication with CrowdStrike Falcon platform. Establishing and retrieving OAuth2 API credentials can be performed at https://falcon.crowdstrike.com/support/api-clients-and-keys."
+fi
+
+case "$FALCON_CLOUD" in
+    ""|"us-1")
+        CLOUD_LOWER=us-1
+        ;;
+    "us-2")
+        CLOUD_LOWER=us-2
+        ;;
+    "eu-1")
+        CLOUD_LOWER=eu-1
+        ;;
+    "*")
+        die "Invalid cloud specifier in FALCON_CLOUD environment variable: $FALCON_CLOUD"
+        ;;
+esac
+
+if [ -z "$CID" ]; then
+    CID=$(falcon_get_cid)
+fi
+
+docker_file="$HOME/.docker/config.json"
+if [ -f  "${docker_file}" ]; then
+    mv ${docker_file}{,.bac}
+fi
+
+falcon_registry_token | docker login --username $(echo $CID | awk -F-  '{print("fc-" tolower($1))}') --password-stdin registry.crowdstrike.com >&2
+
+cat ~/.docker/config.json | base64 -w 0
+
+if [ -f  "${docker_file}.bac" ]; then
+    mv ${docker_file}{.bac,}
+fi
