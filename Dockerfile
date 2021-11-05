@@ -22,7 +22,7 @@ COPY --from=builder /root/go/bin/docker-credential-ecr-login /root/go/bin/falcon
 COPY .docker /root/.docker
 COPY demo-yamls /root/demo-yamls
 COPY kubernetes.repo google-cloud-sdk.repo azure-cli.repo /etc/yum.repos.d/
-COPY falcon-node-sensor-build falcon-container-sensor-push /bin/
+COPY falcon-node-sensor-build falcon-container-sensor-push falcon-image-pull-token /bin/
 
 RUN : \
     && dnf update -y \
