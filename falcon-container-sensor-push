@@ -9,8 +9,7 @@ docker run --privileged=true -it --rm \
         -v /var/run/docker.sock:/var/run/docker.sock \
         -v ~/.config/gcloud:/root/.config/gcloud \
         quay.io/crowdstrike/cloud-tools-image \
-        gcloud auth configure-docker ; \
-        falcon-container-sensor-push gcr.io/my-project/falcon-container
+        bash -xc "gcloud auth configure-docker ; falcon-container-sensor-push gcr.io/my-project/falcon-container "
 
 #OutsideUsageExample
 
