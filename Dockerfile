@@ -28,19 +28,19 @@ COPY kubernetes.repo google-cloud-sdk.repo azure-cli.repo /etc/yum.repos.d/
 COPY falcon-node-sensor-build falcon-container-sensor-push falcon-image-pull-token /bin/
 
 RUN : \
-  && dnf update -y \
-  && dnf install -y kubectl groff-base bash-completion google-cloud-sdk tmux git \
-  && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
-  && dnf install -y zip \
-  && unzip awscliv2.zip \
-  && dnf history undo last -y \
-  && ./aws/install \
-  && curl  https://download.docker.com/linux/centos/docker-ce.repo > /etc/yum.repos.d/docker-ce.repo \
-  && rpm --import https://packages.microsoft.com/keys/microsoft.asc \
-  && dnf install -y docker-ce docker-ce-cli containerd.io azure-cli \
-  && dnf install -y skopeo --nobest --allowerasing jq \
-  && dnf clean all \
-  && rm -rf ./aws awscliv2.zip /var/cache/dnf
+    && dnf update -y \
+    && dnf install -y kubectl groff-base bash-completion google-cloud-sdk tmux git \
+    && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+    && dnf install -y zip \
+    && unzip awscliv2.zip \
+    && dnf history undo last -y \
+    && ./aws/install \
+    && curl  https://download.docker.com/linux/centos/docker-ce.repo > /etc/yum.repos.d/docker-ce.repo \
+    && rpm --import https://packages.microsoft.com/keys/microsoft.asc \
+    && dnf install -y docker-ce docker-ce-cli containerd.io azure-cli \
+    && dnf install -y skopeo --nobest --allowerasing jq \
+    && dnf clean all \
+    && rm -rf ./aws awscliv2.zip /var/cache/dnf
 
 RUN echo $'\n\
   complete -C '/usr/local/bin/aws_completer' aws \n\
