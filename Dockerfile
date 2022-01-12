@@ -11,6 +11,9 @@ RUN curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 |
 # https://github.com/awslabs/amazon-ecr-credential-helper
 RUN go get -u github.com/awslabs/amazon-ecr-credential-helper/ecr-login/cli/docker-credential-ecr-login
 
+# k9s tool - https://github.com/derailed/k9s
+RUN curl -sS https://webinstall.dev/k9s | bash
+
 RUN go get -u github.com/crowdstrike/gofalcon/examples/falcon_sensor_download github.com/crowdstrike/gofalcon/examples/falcon_registry_token github.com/crowdstrike/gofalcon/examples/falcon_get_cid
 
 
@@ -18,7 +21,7 @@ FROM registry.centos.org/centos/centos:8
 
 COPY --from=builder /tmp/eksctl /usr/local/bin/helm /bin/
 COPY --from=builder /root/go/bin/docker-credential-ecr-login /root/go/bin/falcon_* /bin/
-
+COPY --from=builder /root/.local/bin/k9s /bin/
 COPY .docker /root/.docker
 COPY demo-yamls /root/demo-yamls
 COPY kubernetes.repo google-cloud-sdk.repo azure-cli.repo /etc/yum.repos.d/
@@ -39,11 +42,9 @@ RUN : \
     && dnf clean all \
     && rm -rf ./aws awscliv2.zip /var/cache/dnf
 
-       
 RUN echo $'\n\
-complete -C '/usr/local/bin/aws_completer' aws \n\
-' >> /etc/bashrc \
+  complete -C '/usr/local/bin/aws_completer' aws \n\
+  ' >> /etc/bashrc \
   && kubectl completion bash >/etc/bash_completion.d/kubectl \
   && eksctl completion bash >/etc/bash_completion.d/eksctl \
   && helm completion bash >/etc/bash_completion.d/helm
-     
