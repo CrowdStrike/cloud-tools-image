@@ -35,7 +35,7 @@ RUN : \
     && curl  https://download.docker.com/linux/centos/docker-ce.repo > /etc/yum.repos.d/docker-ce.repo \
     && rpm --import https://packages.microsoft.com/keys/microsoft.asc \
     && dnf install -y docker-ce docker-ce-cli containerd.io azure-cli \
-    && dnf install -y skopeo --nobest jq \
+    && dnf install -y skopeo --nobest --allowerasing jq \
     && dnf clean all \
     && rm -rf ./aws awscliv2.zip /var/cache/dnf
 
