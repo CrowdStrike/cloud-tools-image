@@ -29,3 +29,12 @@ This container contains following command-line tools:
  * az command
  * helm command
  * k9s command
+
+## Demo Yamls
+
+The demo-yamls folder is a collection of threats in containers that can be deployed on a Kubernetes cluster.
+
+This command can be used to list all resources deployed:
+```
+kubectl get all --selector=app.kubernetes.io/part-of=crowdstrike-demo
+```
