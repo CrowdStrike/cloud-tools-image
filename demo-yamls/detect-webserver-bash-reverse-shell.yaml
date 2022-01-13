@@ -5,19 +5,21 @@ metadata:
   name: webserver-bash-reverse-shell
 spec:
   selector:
-   matchLabels:
+    matchLabels:
       run: webserver-bash-reverse-shell
   replicas: 1
   template:
     metadata:
       labels:
         run: webserver-bash-reverse-shell
+      annotations:
+        sensor.falcon-system.crowdstrike.com/injection: enabled
     spec:
       containers:
-          - name: app
-            image: quay.io/crowdstrike/detection-container
-            imagePullPolicy: Always
-            command:
-              - "/entrypoint.sh"
-            args:
-              - "./bin/Webserver_Bash_Reverse_Shell.sh; tail -f /dev/null"
+        - name: app
+          image: quay.io/crowdstrike/detection-container
+          imagePullPolicy: Always
+          command:
+            - "/entrypoint.sh"
+          args:
+            - "./bin/Webserver_Bash_Reverse_Shell.sh; tail -f /dev/null"

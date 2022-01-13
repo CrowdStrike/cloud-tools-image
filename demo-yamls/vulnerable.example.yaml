@@ -7,23 +7,25 @@ metadata:
   name: vulnerable.example.com
 spec:
   selector:
-   matchLabels:
+    matchLabels:
       run: vulnerable.example.com
   replicas: 1
   template:
     metadata:
       labels:
         run: vulnerable.example.com
+      annotations:
+        sensor.falcon-system.crowdstrike.com/injection: enabled
     spec:
       containers:
-          - name: app
-            image: quay.io/slukasik/vulnapp
-            imagePullPolicy: Always
-            command:
-              - "/entrypoint.sh"
-            ports:
-             - containerPort: 8080
-               name: web
+        - name: app
+          image: quay.io/slukasik/vulnapp
+          imagePullPolicy: Always
+          command:
+            - "/entrypoint.sh"
+          ports:
+            - containerPort: 8080
+              name: web
 
 ---
 apiVersion: v1

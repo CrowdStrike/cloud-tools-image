@@ -11,12 +11,14 @@ spec:
     metadata:
       labels:
         run: nginx-server
+      annotations:
+        sensor.falcon-system.crowdstrike.com/injection: enabled
     spec:
       containers:
         - name: nginx-server
           image: nginx
           command: ["nginx"]
-          args: ["-g", 'daemon off;']
+          args: ["-g", "daemon off;"]
           ports:
             - containerPort: 80
 
@@ -48,9 +50,11 @@ spec:
     metadata:
       labels:
         run: curl-client
+      annotations:
+        sensor.falcon-system.crowdstrike.com/injection: enabled
     spec:
       containers:
         - name: curl-client
           image: centos:latest
           command: ["/bin/sh"]
-          args: ["-xc","while sleep 5; do curl -I nginx-server; done"]
+          args: ["-xc", "while sleep 5; do curl -I nginx-server; done"]
