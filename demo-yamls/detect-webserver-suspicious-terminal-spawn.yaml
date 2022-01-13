@@ -5,19 +5,21 @@ metadata:
   name: webserver-suspicious-terminal-spawn
 spec:
   selector:
-   matchLabels:
+    matchLabels:
       run: webserver-suspicious-terminal-spawn
   replicas: 1
   template:
     metadata:
       labels:
         run: webserver-suspicious-terminal-spawn
+      annotations:
+        sensor.falcon-system.crowdstrike.com/injection: enabled
     spec:
       containers:
-          - name: app
-            image: quay.io/crowdstrike/detection-container
-            imagePullPolicy: Always
-            command:
-              - "/entrypoint.sh"
-            args:
-              - "./bin/Webserver_Suspicious_Terminal_Spawn.sh; tail -f /dev/null"
+        - name: app
+          image: quay.io/crowdstrike/detection-container
+          imagePullPolicy: Always
+          command:
+            - "/entrypoint.sh"
+          args:
+            - "./bin/Webserver_Suspicious_Terminal_Spawn.sh; tail -f /dev/null"

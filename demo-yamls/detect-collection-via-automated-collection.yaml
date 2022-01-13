@@ -5,19 +5,21 @@ metadata:
   name: collection-via-automated-collection
 spec:
   selector:
-   matchLabels:
+    matchLabels:
       run: collection-via-automated-collection
   replicas: 1
   template:
     metadata:
       labels:
         run: collection-via-automated-collection
+      annotations:
+        sensor.falcon-system.crowdstrike.com/injection: enabled
     spec:
       containers:
-          - name: app
-            image: quay.io/crowdstrike/detection-container
-            imagePullPolicy: Always
-            command:
-              - "/entrypoint.sh"
-            args:
-              - "./bin/Collection_via_Automated_Collection.sh; tail -f /dev/null"
+        - name: app
+          image: quay.io/crowdstrike/detection-container
+          imagePullPolicy: Always
+          command:
+            - "/entrypoint.sh"
+          args:
+            - "./bin/Collection_via_Automated_Collection.sh; tail -f /dev/null"

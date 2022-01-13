@@ -11,20 +11,22 @@ metadata:
   name: detection-single
 spec:
   selector:
-   matchLabels:
+    matchLabels:
       run: detection-single
   replicas: 1
   template:
     metadata:
       labels:
         run: detection-single
+      annotations:
+        sensor.falcon-system.crowdstrike.com/injection: enabled
     spec:
       containers:
-          - name: app
-            image: ubuntu:latest
-            imagePullPolicy: Always
-            command:
-              - "bash"
-            args:
-              - "-xc"
-              - "chgrp 0 /etc/ld.so.preload; tail -f /dev/null"
+        - name: app
+          image: ubuntu:latest
+          imagePullPolicy: Always
+          command:
+            - "bash"
+          args:
+            - "-xc"
+            - "chgrp 0 /etc/ld.so.preload; tail -f /dev/null"
