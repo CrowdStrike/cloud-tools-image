@@ -9,6 +9,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: detection-single
+  labels:
+    app.kubernetes.io/name: detection-single
+    app.kubernetes.io/part-of: crowdstrike-demo
+    app.kubernetes.io/created-by: crowdstrike
 spec:
   selector:
     matchLabels:
@@ -18,6 +22,9 @@ spec:
     metadata:
       labels:
         run: detection-single
+        app.kubernetes.io/name: detection-single
+        app.kubernetes.io/part-of: crowdstrike-demo
+        app.kubernetes.io/created-by: crowdstrike
       annotations:
         sensor.falcon-system.crowdstrike.com/injection: enabled
     spec:

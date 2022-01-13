@@ -3,6 +3,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: collection-via-automated-collection
+  labels:
+    app.kubernetes.io/name: collection-via-automated-collection
+    app.kubernetes.io/part-of: crowdstrike-demo
+    app.kubernetes.io/created-by: crowdstrike
 spec:
   selector:
     matchLabels:
@@ -12,6 +16,9 @@ spec:
     metadata:
       labels:
         run: collection-via-automated-collection
+        app.kubernetes.io/name: collection-via-automated-collection
+        app.kubernetes.io/part-of: crowdstrike-demo
+        app.kubernetes.io/created-by: crowdstrike
       annotations:
         sensor.falcon-system.crowdstrike.com/injection: enabled
     spec:

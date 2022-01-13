@@ -2,6 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-server
+  labels:
+    app.kubernetes.io/name: nginx-server
+    app.kubernetes.io/part-of: crowdstrike-demo
+    app.kubernetes.io/created-by: crowdstrike
 spec:
   selector:
     matchLabels:
@@ -11,6 +15,9 @@ spec:
     metadata:
       labels:
         run: nginx-server
+        app.kubernetes.io/name: nginx-server
+        app.kubernetes.io/part-of: crowdstrike-demo
+        app.kubernetes.io/created-by: crowdstrike
       annotations:
         sensor.falcon-system.crowdstrike.com/injection: enabled
     spec:
@@ -29,6 +36,9 @@ metadata:
   name: nginx-server
   labels:
     run: nginx-server
+    app.kubernetes.io/name: nginx-server
+    app.kubernetes.io/part-of: crowdstrike-demo
+    app.kubernetes.io/created-by: crowdstrike
 spec:
   ports:
     - port: 80
@@ -41,6 +51,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: curl-client
+  labels:
+    app.kubernetes.io/name: curl-client
+    app.kubernetes.io/part-of: crowdstrike-demo
+    app.kubernetes.io/created-by: crowdstrike
 spec:
   selector:
     matchLabels:
@@ -50,6 +64,9 @@ spec:
     metadata:
       labels:
         run: curl-client
+        app.kubernetes.io/name: curl-client
+        app.kubernetes.io/part-of: crowdstrike-demo
+        app.kubernetes.io/created-by: crowdstrike
       annotations:
         sensor.falcon-system.crowdstrike.com/injection: enabled
     spec:
