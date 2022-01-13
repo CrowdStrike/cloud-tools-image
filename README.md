@@ -28,3 +28,4 @@ This container contains following command-line tools:
  * gcloud command
  * az command
  * helm command
+ * k9s command
