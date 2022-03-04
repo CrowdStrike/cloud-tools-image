@@ -1,11 +1,13 @@
 # cloud-tools-image [![Docker Repository on Quay](https://quay.io/repository/crowdstrike/cloud-tools-image/status "Docker Repository on Quay")](https://quay.io/repository/crowdstrike/cloud-tools-image)
 
 ```
-docker run --privileged=true \
+docker run  -it --rm --privileged=true \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    -v ~/.aws:/root/.aws:ro -it --rm \
+    -v ~/.aws:/root/.aws \
     -v ~/.config/gcloud:/root/.config/gcloud \
     -v ~/.azure:/root/.azure \
+    -v ~/.kube:/root/.kube \
+    -v ~/.docker:/root/.docker \
     -e FALCON_CLIENT_ID="$FALCON_CLIENT_ID" \
     -e FALCON_CLIENT_SECRET="$FALCON_CLIENT_SECRET" \
     -e FALCON_CLOUD="$FALCON_CLOUD" \
