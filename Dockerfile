@@ -1,4 +1,4 @@
-FROM registry.centos.org/centos/centos:8 as builder
+FROM quay.io/centos/centos:stream8 as builder
 
 RUN dnf install -y unzip golang-bin git
 
@@ -17,7 +17,7 @@ RUN curl -sS https://webinstall.dev/k9s | bash
 RUN go get -u github.com/crowdstrike/gofalcon/examples/falcon_sensor_download github.com/crowdstrike/gofalcon/examples/falcon_registry_token github.com/crowdstrike/gofalcon/examples/falcon_get_cid
 
 
-FROM registry.centos.org/centos/centos:8
+FROM quay.io/centos/centos:stream8
 
 COPY --from=builder /tmp/eksctl /usr/local/bin/helm /bin/
 COPY --from=builder /root/go/bin/docker-credential-ecr-login /root/go/bin/falcon_* /bin/
@@ -25,7 +25,7 @@ COPY --from=builder /root/.local/bin/k9s /bin/
 COPY .docker /root/.docker
 COPY demo-yamls /root/demo-yamls
 COPY kubernetes.repo google-cloud-sdk.repo azure-cli.repo /etc/yum.repos.d/
-COPY falcon-node-sensor-build falcon-container-sensor-push falcon-image-pull-token /bin/
+COPY falcon-node-sensor-build falcon-node-sensor-push falcon-container-sensor-push falcon-image-pull-token /bin/
 
 RUN : \
     && dnf update -y \
