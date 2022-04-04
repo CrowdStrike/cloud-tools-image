@@ -25,7 +25,7 @@ COPY --from=builder /root/.local/bin/k9s /bin/
 COPY .docker /root/.docker
 COPY demo-yamls /root/demo-yamls
 COPY kubernetes.repo google-cloud-sdk.repo azure-cli.repo /etc/yum.repos.d/
-COPY falcon-node-sensor-build falcon-container-sensor-push falcon-image-pull-token /bin/
+COPY archive/falcon-node-sensor-build falcon-node-sensor-push falcon-container-sensor-push falcon-image-pull-token /bin/
 
 RUN : \
     && dnf update -y \
