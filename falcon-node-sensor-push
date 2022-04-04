@@ -1,0 +1,70 @@
+#!/bin/bash
+
+: <<'#OutsideUsageExample'
+
+docker run --privileged=true -it --rm \
+        -e FALCON_CLIENT_ID="$FALCON_CLIENT_ID" \
+        -e FALCON_CLIENT_SECRET="$FALCON_CLIENT_SECRET" \
+        -e FALCON_CLOUD="$FALCON_CLOUD" \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -v ~/.config/gcloud:/root/.config/gcloud \
+        quay.io/crowdstrike/cloud-tools-image \
+        bash -xc "gcloud auth configure-docker ; falcon-node-sensor-push gcr.io/my-project/falcon-node-sensor "
+
+#OutsideUsageExample
+
+
+
+set -e -o pipefail
+
+function die(){
+    echo "$0: fatal error: $*" >&2
+    exit 1
+}
+
+if [ -z "$FALCON_CLOUD" ]; then
+    echo "WARNING: FALCON_CLOUD environment variable missing. Assuming FALCON_CLOUD=us-1" >&2
+fi
+
+if [ -z "$FALCON_CLIENT_ID" ]; then
+    die "Missing FALCON_CLIENT_ID environment variable. Please provide your OAuth2 API Client ID for authentication with CrowdStrike Falcon platform. Establishing and retrieving OAuth2 API credentials can be performed at https://falcon.crowdstrike.com/support/api-clients-and-keys."
+fi
+if [ -z "$FALCON_CLIENT_SECRET" ]; then
+    die "Missing FALCON_CLIENT_SECRET environment variable. Please provide your OAuth2 API Client Secret for authentication with CrowdStrike Falcon platform. Establishing and retrieving OAuth2 API credentials can be performed at https://falcon.crowdstrike.com/support/api-clients-and-keys."
+fi
+
+case "$FALCON_CLOUD" in
+    ""|"us-1")
+        CLOUD_LOWER=us-1
+        ;;
+    "us-2")
+        CLOUD_LOWER=us-2
+        ;;
+    "eu-1")
+        CLOUD_LOWER=eu-1
+        ;;
+    "*")
+        die "Invalid cloud specifier in FALCON_CLOUD environment variable: $FALCON_CLOUD"
+        ;;
+esac
+
+if [ -z "$CID" ]; then
+    CID=$(falcon_get_cid)
+fi
+
+if [ -z "$1" ]; then
+    die "Missing command-line argument destination URI. Please provide your registry location for pushing the sensor"
+fi
+DESTINATION_IMAGE="$1"
+
+falcon_registry_token | skopeo login --username $(echo "$CID" | awk -F-  '{print("fc-" tolower($1))}') --password-stdin registry.crowdstrike.com
+SOURCE_IMAGE="registry.crowdstrike.com/falcon-sensor/$CLOUD_LOWER/release/falcon-sensor"
+SOURCE_TAG=$(skopeo list-tags docker://$SOURCE_IMAGE | jq -r '.Tags[-1]')
+
+target1=$DESTINATION_IMAGE:$SOURCE_TAG
+target2=$DESTINATION_IMAGE:latest
+
+skopeo copy docker://"$SOURCE_IMAGE:$SOURCE_TAG" "docker-daemon:$target1"
+docker push "$target1"
+docker tag "$target1" "$target2"
+docker push "$target2"
