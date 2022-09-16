@@ -9,18 +9,18 @@ RUN curl --silent --location "https://github.com/weaveworks/eksctl/releases/late
 RUN curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
 # https://github.com/awslabs/amazon-ecr-credential-helper
-RUN go get -u github.com/awslabs/amazon-ecr-credential-helper/ecr-login/cli/docker-credential-ecr-login
+RUN go install github.com/awslabs/amazon-ecr-credential-helper/ecr-login/cli/docker-credential-ecr-login@latest
 
 # k9s tool - https://github.com/derailed/k9s
 RUN curl -sS https://webinstall.dev/k9s | bash
 
-RUN go get -u github.com/crowdstrike/gofalcon/examples/falcon_sensor_download github.com/crowdstrike/gofalcon/examples/falcon_registry_token github.com/crowdstrike/gofalcon/examples/falcon_get_cid
+RUN curl -sSfL https://raw.githubusercontent.com/crowdstrike/gofalcon/main/examples/install | sh -s
 
 
 FROM quay.io/centos/centos:stream8
 
 COPY --from=builder /tmp/eksctl /usr/local/bin/helm /bin/
-COPY --from=builder /root/go/bin/docker-credential-ecr-login /root/go/bin/falcon_* /bin/
+COPY --from=builder /root/go/bin/docker-credential-ecr-login /usr/bin/falcon_sensor_download /usr/bin/falcon_registry_token /usr/bin/falcon_get_cid /bin/
 COPY --from=builder /root/.local/bin/k9s /bin/
 COPY .docker /root/.docker
 COPY demo-yamls /root/demo-yamls
