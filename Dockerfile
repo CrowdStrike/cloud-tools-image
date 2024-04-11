@@ -29,7 +29,7 @@ COPY falcon-node-sensor-build falcon-node-sensor-push falcon-container-sensor-pu
 
 RUN : \
     && dnf update -y \
-    && dnf install -y kubectl groff-base bash-completion google-cloud-sdk tmux git \
+    && dnf install -y kubectl groff-base bash-completion google-cloud-sdk git \
     && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
     && dnf install -y zip \
     && unzip awscliv2.zip \
