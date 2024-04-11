@@ -1,4 +1,4 @@
-FROM quay.io/centos/centos:stream8 as builder
+FROM registry.access.redhat.com/ubi9/ubi as builder
 
 RUN dnf install -y unzip golang-bin git
 
@@ -17,7 +17,7 @@ RUN curl -sS https://webinstall.dev/k9s | bash
 RUN curl -sSfL https://raw.githubusercontent.com/crowdstrike/gofalcon/main/examples/install | sh -s
 
 
-FROM quay.io/centos/centos:stream8
+FROM registry.access.redhat.com/ubi9/ubi
 
 COPY --from=builder /tmp/eksctl /usr/local/bin/helm /bin/
 COPY --from=builder /root/go/bin/docker-credential-ecr-login /usr/bin/falcon_sensor_download /usr/bin/falcon_registry_token /usr/bin/falcon_get_cid /bin/
