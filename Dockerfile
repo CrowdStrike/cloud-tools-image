@@ -6,7 +6,7 @@ ARG TARGETARCH
 RUN dnf install -y unzip golang-bin git
 
 # eksctl cli
-RUN PLATFORM=$(uname -s)_${TARGETARCH} && \
+RUN PLATFORM="Linux_${TARGETARCH}" && \
     curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz" && \
     curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check && \
     tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && \
@@ -37,8 +37,7 @@ COPY falcon-node-sensor-build falcon-node-sensor-push falcon-container-sensor-pu
 RUN : \
     && dnf update -y \
     && dnf install -y kubectl groff-base bash-completion google-cloud-sdk git \
-    && ARCH=$(uname -m) \
-    && curl "https://awscli.amazonaws.com/awscli-exe-linux-$ARCH.zip" -o "awscliv2.zip" \
+    && curl "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2.zip" \
     && dnf install -y zip \
     && unzip awscliv2.zip \
     && dnf history undo last -y \
